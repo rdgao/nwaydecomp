@@ -131,6 +131,42 @@ cfg=[];
 cfg.trl = [part_inds' part_inds'+part_len*fs_ds-1 zeros(num_part,1)];
 data_tr = ft_redefinetrial(cfg, data);
 data_tr = ft_preprocessing(cfg, data_tr);
+
+%% computing SPACE input
+freqoi = 0.5:0.5:20;
+timwin = 7./freqoi; % 7 cycle filter
+timeoi = 1:0.001:part_len-1; % cut off 1 second from beginning and end
+taper = 'hanning';
+FCoef = rmr_SPACEinput_electrophysiology(data_tr, freqoi, timeoi, timwin, taper);
+disp(size(FCoef))
+%% save out to disk
+clear fourier
+datafolder = '/Users/rgao/Documents/Data/Muotri/Pri_Corticoids/space_inputs/';
+% odd trials
+fourier = FCoef(:,:,1:2:num_part,:);
+save([datafolder 'fourprt1.mat'], 'fourier', '-v7.3');
+% even trials
+fourier = FCoef(:,:,2:2:num_part,:);
+save([datafolder 'fourprt2.mat'], 'fourier', '-v7.3');
+% full trials
+fourier = FCoef;
+save([datafolder 'fourfull.mat'], 'fourier', '-v7.3');
+% config
+labels = data.label;
+save([datafolder 'space_configs.mat'], 'labels','freqoi', '-v7.3');
+
+%%
+
+
+
+
+
+
+
+%%
+%% DO NOT USE BECAUSE FOURIER COEFFICIENTS COME OUT THE WRONG ORDER 
+% AND FIELDTRIP DOES A MYSTERY INTERNAL NORMALIZATION THING THAT WE SHOULD
+% UNDO
 %% compute Fourier coefficients
 cfg = []; 
 cfg.foi = 0.5:0.5:20;
@@ -163,6 +199,18 @@ nwaydecomp = nd_nwaydecomposition(cfg,freqdata);
 
 
 %%
+
+
+%%
+    
+    
+
+
+
+%%
+
+FData = freqdata;
+FData.fourierspctrm = FCoef;
 FCoef = rmr_SPACEinput_electrophysiology(data_tr, freqoi, timeoi, timwin, taper);
 % fake the FT struct
 FData.labels = data_tr.label;
