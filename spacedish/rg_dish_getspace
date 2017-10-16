@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+#PBS -q hotel
+#PBS -N spacedishlfp
+#PBS -l nodes=1
+#PBS -l walltime=150:00:00
+#PBS -l mem=25gb
+#PBS -o spacedishlfp.o
+#PBS -e spacedishlfp.e
+#PBS -V
+#PBS -M rigao@ucsd.edu
+#PBS -m ae
+cd ~
+/opt/matlab/2015a/bin/matlab -singleCompThread -nodesktop -nojvm -r rg_spacedishlfp
+
+# get out of here
+exit

@@ -19,7 +19,7 @@ fourprt1 = [datafolder 'fourprt1.mat'];
 fourprt2 = [datafolder 'fourprt2.mat'];
 
 % define output file
-outputpath = [datafolder 'nwaydecomp.mat'];
+outputpath = [datafolder 'nwaydecomp_setcomp.mat'];
 
 % nwaydecomp settings
 nwayalg      = 'spacetime'; % 'spacefsp'
@@ -54,10 +54,10 @@ cfg.outputfile         = outputpath;
 cfg.ncompestrandstart   = nwaynrand;
 cfg.ncompestsrdatparam  = 'fourierpart';
 cfg.ncompest            = 'splitrel';
-cfg.ncompeststart       = 3;
-cfg.ncompeststep        = 2;
-cfg.ncompestend         = 20;
-cfg.ncompestsrcritval   = [.7 .7 0 .7 0];
+cfg.ncompeststart       = 10;
+cfg.ncompeststep        = 1;
+cfg.ncompestend         = 10;
+cfg.ncompestsrcritval   = [nan nan 0 nan 0];
 cfg.ncompestsrcritjudge = 'meanoversplitscons';
 
 if ~comp_local
