@@ -19,12 +19,12 @@ fourprt1 = [datafolder 'fourprt1.mat'];
 fourprt2 = [datafolder 'fourprt2.mat'];
 
 % define output file
-outputpath = [datafolder 'nwaydecomp_setcomp.mat'];
+outputpath = [datafolder 'nwaydecomp_set10comps.mat'];
 
 % nwaydecomp settings
 nwayalg      = 'spacetime'; % 'spacefsp'
 nwaynmethod  = 'splitrel'; %'ncomp10sr'; %'ncomp15sr'; % 'splitrel'
-nwaynrand    = 50;
+nwaynrand    = 30;
 nwayconvcrit = 1e-8;
 normmethod   = 'none'; % coh none 16throotpower
 nwaysplit    = 'oddeventrials'; %  oddeventrials
@@ -63,10 +63,10 @@ cfg.ncompestsrcritjudge = 'meanoversplitscons';
 if ~comp_local
     % compute on torque, set up core distribution
     cfg.distcomp.system          = 'torque';
-    cfg.distcomp.timreq          = 60*60*8; %
+    cfg.distcomp.timreq          = 60*60*40; %
     cfg.distcomp.matlabcmd       = '/opt/matlab/2015a/bin/matlab';
     cfg.distcomp.torquequeue     = 'hotel';
-    cfg.distcomp.torquestack     = 2;    
+    cfg.distcomp.torquestack     = 1;    
     cfg.distcomp.qsuboptions     = ' -k oe ';
 end
 
