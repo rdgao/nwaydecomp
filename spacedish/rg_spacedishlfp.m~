@@ -1,6 +1,0 @@
-function rg_spacedishlfp
-
-datafolder = '
-% define filepath for fourier 
-fourprt1 = '
-/projects/ps-voyteklab/ricgao/data/spacedish
