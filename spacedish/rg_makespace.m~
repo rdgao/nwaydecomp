@@ -7,12 +7,19 @@ function rg_makespace(inputfolder, outputfolder, loadopts, ncomp_params, clus_pa
 % Inputs:
 %   inputfolder: input folder with data and config files (fourfull.mat, space_configs.mat).
 %   outputfulder: output folder for data saveout
+%   loadopts: [dosplit, kthrootnorm, loadfromdisk]
+%       flags for loading/preprocessing fourier data
+%       - dosplit: 1 for splitting the data in this process, 0 if split
+%       - kthrootnorm: 0 for not norming, otherwise norm by power at this root
+%       - loadfromdisk: 1 to use filenames as input, 0 to load into memory
 %   ncomp_params: [ncompstart, ncompend, ncompstep]; defaults to [10, 10, 1]
 %       start, stop, and step size of # of components. If start equals to
 %       stop size, then do preset search
 %   clus_params: [timreq, nstacks]; defaults to [10*60*60, 1]
 %       parameters for torque: computation time required for each init and 
 %       number of inits to stack per core
+
+comp_local 
 
 % set default params
 if isempty(ncomp_params)
@@ -26,6 +33,7 @@ end
 % load configs
 space_config = load([inputfolder 'space_configs.mat']);
 
+% options for loading/preprocessing datafile
 dosplit = loadopts(1);
 kthrootnorm = loadopts(2);
 loadfromdisk = loadopts(3);
@@ -37,6 +45,7 @@ if dosplit
     FC_full_orig = load([inputfolder 'fourfull.mat']);    
     if kthrootnorm
         % need to norm by kth root of eigen values (for spiking data)
+        disp(sprintf('Norming Fourier coefficients by %ith root.', kthrootnorm));
         [fourier, scaling] = rmr_normfourierbyroot(FC_full_orig.fourier, kthrootnorm);
     else
         % no need to norm
@@ -84,8 +93,8 @@ end
 % define output file
 if ~exist(outputfolder, 'dir')
     mkdir(outputfolder);
-    outputpath = [outputfolder 'nwaydecomp.mat'];
 end
+outputpath = [outputfolder 'nwaydecomp.mat'];
     
 % build fourierdata
 fourierdata = [];
@@ -134,6 +143,8 @@ if ~comp_local
     cfg.distcomp.torquestack     = clus_params(2); % number of stacks per core
     cfg.distcomp.qsuboptions     = ' -k oe ';
 end
+
+disp(sprintf('Starting job with %i cores, %i stacks '))
 
 % blast off!
 nwaycomp = nd_nwaydecomposition(cfg,fourierdata);

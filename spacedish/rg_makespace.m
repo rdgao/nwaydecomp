@@ -19,6 +19,8 @@ function rg_makespace(inputfolder, outputfolder, loadopts, ncomp_params, clus_pa
 %       parameters for torque: computation time required for each init and 
 %       number of inits to stack per core
 
+comp_local = 0;
+
 % set default params
 if isempty(ncomp_params)
     ncomp_params = [10, 10, 1];
@@ -120,8 +122,9 @@ cfg.ncompest            = 'splitrel';
 
 % grab input parameters for here, either set n-comp or search
 cfg.ncompeststart       = ncomp_params(1);
-cfg.ncompeststep        = ncomp_params(2);
-cfg.ncompestend         = ncomp_params(3);
+cfg.ncompestend         = ncomp_params(2);
+cfg.ncompeststep        = ncomp_params(3);
+
 if cfg.ncompeststart == cfg.ncompestend
     % manually set component number , set critval to nans to fail
     cfg.ncompestsrcritval   = [nan nan 0 nan 0];
@@ -141,6 +144,9 @@ if ~comp_local
     cfg.distcomp.torquestack     = clus_params(2); % number of stacks per core
     cfg.distcomp.qsuboptions     = ' -k oe ';
 end
+
+disp(sprintf('Starting job with %i inits, with %i-init stacks each, allocating %i seconds per core.', cfg.randstart, clus_params(2), clus_params(1)));
+disp(sprintf('Starting at %i components, to %i, at steps of %i',cfg.ncompeststart,cfg.ncompestend,cfg.ncompeststep));
 
 % blast off!
 nwaycomp = nd_nwaydecomposition(cfg,fourierdata);
