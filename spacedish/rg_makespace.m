@@ -91,8 +91,8 @@ end
 % define output file
 if ~exist(outputfolder, 'dir')
     mkdir(outputfolder);
-    outputpath = [outputfolder 'nwaydecomp.mat'];
 end
+outputpath = [outputfolder 'nwaydecomp.mat'];
     
 % build fourierdata
 fourierdata = [];
