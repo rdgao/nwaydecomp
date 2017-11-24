@@ -62,12 +62,12 @@ if dosplit
         end
         disp(['Saving split data in: ', splitfolder]);
         % save full data
-        save([splitfolder 'fourfull.mat'], 'fourier');
+        save([splitfolder 'fourfull.mat'], 'fourier', '-v7.3');
         % save halves
         fourier = fourier1;
-        save([splitfolder 'fourprt1.mat'], 'fourier');
+        save([splitfolder 'fourprt1.mat'], 'fourier','-v7.3');
         fourier = fourier2;
-        save([splitfolder 'fourprt2.mat'], 'fourier');
+        save([splitfolder 'fourprt2.mat'], 'fourier','-v7.3');
         
         % the following variables will be used for the fourier fields
         disp(['Loading data from: ' splitfolder]);
