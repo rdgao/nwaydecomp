@@ -94,7 +94,7 @@ for iepoch = 1:nepoch
   currepochdat  = double(sparse(dat{iepoch})); % ensure sparse and double
   nsmpcurrepoch = size(currepochdat,2);
   for ifreq = 1:nfreq
-    disp(['getting fourier coefficients of epoch #' num2str(iepoch) ' @' num2str(freqoi(ifreq)) 'Hz'])
+    %disp(['getting fourier coefficients of epoch #' num2str(iepoch) ' @' num2str(freqoi(ifreq)) 'Hz'])
     
     % construct wavelet and convolve using sparse convolution (from the file exchange)
     nsmptimwin = round(timwin .* fsample);

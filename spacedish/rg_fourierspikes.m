@@ -1,8 +1,13 @@
+function rg_fourierspikes(wells)
+
 % compute fourier coefficients for spikes
 
 %% define input and output folder
 input_file = '/projects/ps-voyteklab/ricgao/data/spikes_aggregate/spikes_aggregate.mat';
 output_folder = '/projects/ps-voyteklab/ricgao/data/spacedish/spikes_all/';
+
+%input_file = './spikes_aggregate.mat';
+%output_folder = './';
 disp(input_file)
 load(input_file)
 
@@ -19,7 +24,7 @@ fr_cfg = [];
 fr_cfg.timwin = 0.02; % 20 ms window
 fr_cfg.freqoi = (1:20)./fr_cfg.timwin;
 %%
-wells = 5:12;
+%wells = 5:12;
 num_well = length(wells);
 FC_all = cell(1,num_well);
 TR_all = zeros(num_part,2,length(spiketrains));
@@ -37,7 +42,9 @@ for file = 1:length(spiketrains)
     for well = wells
         disp(well)
         FC = rg_spike2fourier(spikes(well,:), fs, ceil(T(file)), 0, tr_info, fr_cfg);
-        FC_all{find(wells==well)} = cat(3, FC_all{find(wells==well)}, FC);
+        FC_filled = nan(size(FC,1),size(FC,2),size(FC,3),size(FC,1)); % fill empty slots with nans
+        FC_filled(:,:,:,1:size(FC,4)) = FC;
+        FC_all{find(wells==well)} = cat(3, FC_all{find(wells==well)}, FC_filled);
     end
 end
 %%
